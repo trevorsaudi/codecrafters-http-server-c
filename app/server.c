@@ -56,8 +56,8 @@ int main() {
 	if(accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len) != -1){
 		printf("Client connected\n");
 		
-		send(server_fd, success_msg, success_msg_length, MSG_CONFIRM)
-	} ;
+		send(server_fd, success_msg, success_msg_length, MSG_CONFIRM);
+	} 
 
 	
 	close(server_fd);
