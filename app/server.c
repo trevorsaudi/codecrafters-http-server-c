@@ -72,12 +72,12 @@ int main() {
 		send(connected_fd, OK_msg, OK_msg_length, MSG_CONFIRM);
 	} 
 	
-	if (request_fd = recv(connected_fd, recv_buf, MSG_WAITALL) == -1){
+	if (request_fd = recv(connected_fd, recv_buf, recv_buf_len , MSG_WAITALL) == -1){
 		printf("Error encountered when receiving data: ", strerror(errno));
 		return -1;
 	}
 	print(recv_buf);
-	
+
 	close(server_fd);
 
 	return 0;
