@@ -76,7 +76,7 @@ int main() {
 		printf("Error encountered when receiving data: ", strerror(errno));
 		return -1;
 	}
-	printf(recv_buf);
+	printf("These are the bytes received: %s", recv_buf);
 
 	close(server_fd);
 
