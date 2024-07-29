@@ -15,7 +15,7 @@ int main() {
 	// You can use print statements as follows for debugging, they'll be visible when running tests.
 	printf("Logs from your program will appear here!\n");
 	
-	int server_fd, client_addr_len;
+	int server_fd, client_addr_len, new_socket;
 	struct sockaddr_in client_addr;
 	const char success_msg[] = "HTTP/1.1 200 OK\r\n\r\n";
 	size_t success_msg_length = sizeof(success_msg);
