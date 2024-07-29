@@ -53,9 +53,9 @@ int main() {
 	printf("Waiting for a client to connect...\n");
 	client_addr_len = sizeof(client_addr);
 	
-	if(accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len) != -1){
+	if(new_socket = accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len) != -1){
 		printf("Client connected\n");
-		send(server_fd, success_msg, success_msg_length, MSG_CONFIRM);
+		send(new_socket, success_msg, success_msg_length, MSG_CONFIRM);
 	} 
 
 	
