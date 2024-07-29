@@ -24,10 +24,10 @@ int main() {
 	
 	int server_fd, client_addr_len, connected_fd, request_fd;
 	struct sockaddr_in client_addr;
-	\
+	
 	const char OK_msg[] = "HTTP/1.1 200 OK\r\n\r\n";
 	const char NOTFOUND_msg[] = "HTTP/1.1 404 Not Found\r\n\r\n" ;
-	char recv_buf[];
+	char recv_buf[500];
 	size_t recv_buf_len;
 	recv_buf_len = sizeof(recv_buf);
 
