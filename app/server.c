@@ -17,7 +17,7 @@ int main() {
 	
 	int server_fd, client_addr_len;
 	struct sockaddr_in client_addr;
-	const char success_msg[] = 'HTTP/1.1 200 OK\r\n\r\n';
+	const char success_msg[] = "HTTP/1.1 200 OK\r\n\r\n";
 	size_t success_msg_length = sizeof(success_msg);
 	server_fd = socket(AF_INET, SOCK_STREAM, 0);
 
