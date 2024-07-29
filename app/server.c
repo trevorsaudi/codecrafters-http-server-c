@@ -17,8 +17,10 @@ int main() {
 	
 	int server_fd, client_addr_len;
 	struct sockaddr_in client_addr;
-	
+	const char* success_msg[] = 'HTTP/1.1 200 OK\r\n\r\n';
+	size_t success_msg_length = sizeof(success_msg);
 	server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
 	if (server_fd == -1) {
 		printf("Socket creation failed: %s...\n", strerror(errno));
 		return 1;
@@ -51,8 +53,12 @@ int main() {
 	printf("Waiting for a client to connect...\n");
 	client_addr_len = sizeof(client_addr);
 	
-	accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len);
-	printf("Client connected\n");
+	if(accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len) != -1){
+		printf("Client connected\n");
+		
+		send(server_fd, success_msg, success_msg_length, MSG_CONFIRM)
+	} ;
+
 	
 	close(server_fd);
 
