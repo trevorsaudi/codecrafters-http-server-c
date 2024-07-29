@@ -88,7 +88,3 @@ int main() {
 // we can then extract the URL from the request and parse the target
 
 
-GET /index.html HTTP/1.1\r\n
-Host: localhost:4221\r\n
-User-Agent: curl/7.64.1\r\n
-Accept: */*\r\n\r\n
