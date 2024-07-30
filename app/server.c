@@ -22,7 +22,7 @@ void targetTokenizer(char str[], int connected_fd){
     pch = strtok(str, " ");
     target = pch = strtok(NULL, " ");
 	if(target == "/"){
-		send(connected_fd, NOTFOUND_msg, OK_msg_length, MSG_CONFIRM);
+		send(connected_fd, OK_msg, OK_msg_length, MSG_CONFIRM);
 	}else{
 		send(connected_fd, NOTFOUND_msg, NOTFOUND_msg, MSG_CONFIRM);
 	}
@@ -84,8 +84,6 @@ int main() {
 		send(connected_fd, OK_msg, OK_msg_length, MSG_CONFIRM);
 	} 
 	
-
-	memset(recv_buf, 0,BUFFER_SIZE);
 	if (request_fd = recv(connected_fd, recv_buf, recv_buf_len , MSG_WAITALL) == -1){
 		printf("Error encountered when receiving data: ", strerror(errno));
 		close(server_fd);
