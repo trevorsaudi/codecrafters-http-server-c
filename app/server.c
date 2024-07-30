@@ -99,7 +99,7 @@ int main() {
 		break;
 		return 0;
 	}
-	//recv_buf[request_fd]= "\0";
+	recv_buf[request_fd]= "\0";
 	targetTokenizer(recv_buf, connected_fd);
 	}
 	
