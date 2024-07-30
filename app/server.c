@@ -13,17 +13,32 @@
 
 const char OK_msg[] = "HTTP/1.1 200 OK\r\n\r\n";
 const char NOTFOUND_msg[] = "HTTP/1.1 404 Not Found\r\n\r\n" ;
+char echo_resp_template [] = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s";
+char response [BUFFER_SIZE];
 ssize_t server_fd, connected_fd, request_fd;
 size_t OK_msg_length = sizeof(OK_msg);
 size_t NOTFOUND_msg_length = sizeof(OK_msg);
+
 void targetTokenizer(char str[], int connected_fd){
     char *pch;
     char *target;
+	char *echo;
+	int echo_len;
     pch = strtok(str, " ");
     target = pch = strtok(NULL, " ");
+
+	echo = strtok(target, "/"); 
+    echo = strtok(NULL, ""); 
+	echo_len = sizeof(echo);
+	char *checker = NULL;
+    checker = strstr(target, "/echo");
+	snprintf(response, BUFFER_SIZE, echo_resp_template, echo_len, echo);
+	printf("The value of target and echo is: %s %s\n", target, echo);
 	if (target != NULL && strcmp(target, "/") == 0) {
         send(connected_fd, OK_msg, sizeof(OK_msg) - 1, MSG_CONFIRM);
-    } else {
+    }else if(checker == target){
+		send(connected_fd, response,sizeof(response) - 1, MSG_CONFIRM);
+	} else {
         send(connected_fd, NOTFOUND_msg, sizeof(NOTFOUND_msg) - 1, MSG_CONFIRM);
     }
 }
@@ -99,7 +114,6 @@ int main() {
 		break;
 		return 0;
 	}
-	recv_buf[request_fd]= "\0";
 	targetTokenizer(recv_buf, connected_fd);
 	}
 	
