@@ -27,16 +27,19 @@ void targetTokenizer(char str[], int connected_fd){
     pch = strtok(str, " ");
     target = pch = strtok(NULL, " ");
 
-	echo = strtok(target, "/"); 
-    echo = strtok(NULL, ""); 
-	echo_len = sizeof(echo);
-	char *checker = NULL;
-    checker = strstr(target, "/echo");
-	snprintf(response, BUFFER_SIZE, echo_resp_template, echo_len, echo);
-	printf("The value of target and echo is: %s %s\n", target, echo);
+	// echo = strtok(target, "/"); 
+    // echo = strtok(NULL, ""); 
+	// echo_len = sizeof(echo);
+	// char *checker = NULL;
+    // checker = strstr(target, "/echo");
+	// printf("The value of target and echo is: %s %s\n", target, echo);
 	if (target != NULL && strcmp(target, "/") == 0) {
         send(connected_fd, OK_msg, sizeof(OK_msg) - 1, MSG_CONFIRM);
-    }else if(checker == target){
+    }else if(strncmp(target, "/echo/", 6) == 0){
+		echo = target + 6;
+		echo_len = strlen(echo);
+		snprintf(response, BUFFER_SIZE, echo_resp_template, echo_len, echo);
+		//printf("The value of echo is: %s \n", response);
 		send(connected_fd, response,sizeof(response) - 1, MSG_CONFIRM);
 	} else {
         send(connected_fd, NOTFOUND_msg, sizeof(NOTFOUND_msg) - 1, MSG_CONFIRM);
