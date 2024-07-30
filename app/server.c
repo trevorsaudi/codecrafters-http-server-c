@@ -24,7 +24,7 @@ void targetTokenizer(char str[], int connected_fd){
 	if(target == "/"){
 		send(connected_fd, NOTFOUND_msg, OK_msg_length, MSG_CONFIRM);
 	}else{
-		send(connected_fd, NOTFOUND_msg, NOTFOUND_msg_length, MSG_CONFIRM);
+		send(connected_fd, NOTFOUND_msg, NOTFOUND_msg, MSG_CONFIRM);
 	}
 }
 
@@ -78,25 +78,26 @@ int main() {
 	
 	printf("Waiting for a client to connect...\n");
 
-
-	if((connected_fd = accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len)) != -1){
+	connected_fd = accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len);
+	if(connected_fd != -1){
 		printf("Client connected\n");
 		send(connected_fd, OK_msg, OK_msg_length, MSG_CONFIRM);
 	} 
 	
-	while(1){
+
 	memset(recv_buf, 0,BUFFER_SIZE);
 	if (request_fd = recv(connected_fd, recv_buf, recv_buf_len , MSG_WAITALL) == -1){
 		printf("Error encountered when receiving data: ", strerror(errno));
+		close(server_fd);
 		return -1;
 	}else if (request_fd == 0){
 		printf("Client has closed the connection");
-		break;
-	}else{
+		close(server_fd);
+		return 0;
+	}
 	targetTokenizer(recv_buf, request_fd);
 	
-	}
-	}
+	
 	
 	
 	close(server_fd);
