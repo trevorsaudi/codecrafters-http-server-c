@@ -6,13 +6,27 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include <signal.h>
 
-struct ResponseBody{
-char statusline[50];
-char headers[500];
-};
+#define BUFFER_SIZE 1024
+#define PORT 4221
 
+const char OK_msg[] = "HTTP/1.1 200 OK\r\n\r\n";
+const char NOTFOUND_msg[] = "HTTP/1.1 404 Not Found\r\n\r\n" ;
+int server_fd, connected_fd, request_fd;
+size_t OK_msg_length = sizeof(OK_msg);
 
+void targetTokenizer(char str[], int connected_fd){
+    char *pch;
+    char *target;
+    pch = strtok(str, " ");
+    target = pch = strtok(NULL, " ");
+	if(target == "/"){
+		send(connected_fd, OK_msg, OK_msg_length, MSG_CONFIRM);
+	}else{
+		send(connected_fd, NOTFOUND_msg, OK_msg_length, MSG_CONFIRM);
+	}
+}
 
 int main() {
 	// Disable output buffering
@@ -22,16 +36,15 @@ int main() {
 	// You can use print statements as follows for debugging, they'll be visible when running tests.
 	printf("Logs from your program will appear here!\n");
 	
-	int server_fd, client_addr_len, connected_fd, request_fd;
-	struct sockaddr_in client_addr;
 	
-	const char OK_msg[] = "HTTP/1.1 200 OK\r\n\r\n";
-	const char NOTFOUND_msg[] = "HTTP/1.1 404 Not Found\r\n\r\n" ;
-	char recv_buf[500];
+	struct sockaddr_in client_addr;
+	socklen_t client_addr_len;
+	client_addr_len = sizeof(client_addr);
+	
+	char recv_buf[BUFFER_SIZE];
 	size_t recv_buf_len;
 	recv_buf_len = sizeof(recv_buf);
 
-	size_t OK_msg_length = sizeof(OK_msg);
 	server_fd = socket(AF_INET, SOCK_STREAM, 0);
 
 	if (server_fd == -1) {
@@ -48,7 +61,7 @@ int main() {
 	}
 	
 	struct sockaddr_in serv_addr = { .sin_family = AF_INET ,
-									 .sin_port = htons(4221),
+									 .sin_port = htons(PORT),
 									 .sin_addr = { htonl(INADDR_ANY) },
 									};
 	
@@ -64,7 +77,6 @@ int main() {
 	}
 	
 	printf("Waiting for a client to connect...\n");
-	client_addr_len = sizeof(client_addr);
 
 
 	if((connected_fd = accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len)) != -1){
@@ -72,12 +84,21 @@ int main() {
 		send(connected_fd, OK_msg, OK_msg_length, MSG_CONFIRM);
 	} 
 	
+	while(1){
+	memset(recv_buf, 0,BUFFER_SIZE);
 	if (request_fd = recv(connected_fd, recv_buf, recv_buf_len , MSG_WAITALL) == -1){
 		printf("Error encountered when receiving data: ", strerror(errno));
 		return -1;
+	}else if (request_fd == 0){
+		printf("Client has closed the connection");
+		break;
+	}else{
+	targetTokenizer(recv_buf, request_fd);
+	
 	}
-	printf("These are the bytes received: %s", recv_buf);
-
+	}
+	
+	
 	close(server_fd);
 
 	return 0;
