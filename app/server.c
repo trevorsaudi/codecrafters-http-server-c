@@ -87,7 +87,7 @@ int main() {
 	printf("Client Connected: %s\n",strerror(errno));
 
 	while(1){
-	memset(recv_buf, 0, recv_buf_len);
+	memset(recv_buf, 0, BUFFER_SIZE);
 	request_fd = recv(connected_fd, recv_buf, recv_buf_len , MSG_WAITALL);
 	if (request_fd  == -1){
 		printf("Error encountered when receiving data: ", strerror(errno));
