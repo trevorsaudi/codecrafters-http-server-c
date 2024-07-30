@@ -29,7 +29,7 @@ void targetTokenizer(char str[], int connected_fd){
 
 	echo = strtok(target, "/"); 
     echo = strtok(NULL, ""); 
-	echo_len = sizeof(echo);
+	echo_len = strlen(echo);
 	char *checker = NULL;
     checker = strstr(target, "/echo");
 	snprintf(response, BUFFER_SIZE, echo_resp_template, echo_len, echo);
