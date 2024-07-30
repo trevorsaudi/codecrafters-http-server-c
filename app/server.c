@@ -21,11 +21,11 @@ void targetTokenizer(char str[], int connected_fd){
     char *target;
     pch = strtok(str, " ");
     target = pch = strtok(NULL, " ");
-	if(target == "/"){
-		send(connected_fd, OK_msg, OK_msg_length, MSG_CONFIRM);
-	}else{
-		send(connected_fd, NOTFOUND_msg, NOTFOUND_msg, MSG_CONFIRM);
-	}
+	if (target != NULL && strcmp(target, "/") == 0) {
+        send(connected_fd, OK_msg, sizeof(OK_msg) - 1, MSG_CONFIRM);
+    } else {
+        send(connected_fd, NOTFOUND_msg, sizeof(NOTFOUND_msg) - 1, MSG_CONFIRM);
+    }
 }
 
 int main() {
