@@ -13,7 +13,7 @@
 
 const char OK_msg[] = "HTTP/1.1 200 OK\r\n\r\n";
 const char NOTFOUND_msg[] = "HTTP/1.1 404 Not Found\r\n\r\n" ;
-int server_fd, connected_fd, request_fd;
+ssize_t server_fd, connected_fd, request_fd;
 size_t OK_msg_length = sizeof(OK_msg);
 size_t NOTFOUND_msg_length = sizeof(OK_msg);
 void targetTokenizer(char str[], int connected_fd){
