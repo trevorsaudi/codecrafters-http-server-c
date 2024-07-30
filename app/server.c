@@ -88,7 +88,7 @@ int main() {
 
 	while(1){
 	memset(recv_buf, 0, BUFFER_SIZE);
-	request_fd = recv(connected_fd, recv_buf, recv_buf_len , MSG_WAITALL);
+	request_fd = recv(connected_fd, recv_buf, recv_buf_len , 0);
 	if (request_fd  == -1){
 		printf("Error encountered when receiving data: ", strerror(errno));
 		close(server_fd);
