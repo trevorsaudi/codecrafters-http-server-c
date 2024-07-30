@@ -15,7 +15,7 @@ const char OK_msg[] = "HTTP/1.1 200 OK\r\n\r\n";
 const char NOTFOUND_msg[] = "HTTP/1.1 404 Not Found\r\n\r\n" ;
 int server_fd, connected_fd, request_fd;
 size_t OK_msg_length = sizeof(OK_msg);
-size_t NOTFOUND_msg = sizeof(OK_msg);
+size_t NOTFOUND_msg_length = sizeof(OK_msg);
 void targetTokenizer(char str[], int connected_fd){
     char *pch;
     char *target;
@@ -24,7 +24,7 @@ void targetTokenizer(char str[], int connected_fd){
 	if(target == "/"){
 		send(connected_fd, NOTFOUND_msg, OK_msg_length, MSG_CONFIRM);
 	}else{
-		send(connected_fd, NOTFOUND_msg, NOTFOUND_msg, MSG_CONFIRM);
+		send(connected_fd, NOTFOUND_msg, NOTFOUND_msg_length, MSG_CONFIRM);
 	}
 }
 
