@@ -22,14 +22,15 @@ size_t NOTFOUND_msg_length = sizeof(OK_msg);
 void targetTokenizer(char str[], int connected_fd){
 
 	char *usragent_cpy;
+	char *user_agent;
 	char *cpy_pch;
     char *pch;
     char *target;
 	char *echo;
 	int echo_len;
+	strcpy(usragent_cpy, str); 
     pch = strtok(str, " ");
     target = pch = strtok(NULL, " ");
-	usragent_cpy = str; 
 	// echo = strtok(target, "/"); 
     // echo = strtok(NULL, ""); 
 	// echo_len = sizeof(echo);
@@ -44,13 +45,19 @@ void targetTokenizer(char str[], int connected_fd){
 		snprintf(response, BUFFER_SIZE, echo_resp_template, echo_len, echo);
 		//printf("The value of echo is: %s \n", response);
 		send(connected_fd, response,sizeof(response) - 1, MSG_CONFIRM);
-	}else if(strncmp(target, "/user-agent", 12) == 0){
-		while(cpy_pch != NULL){
-		printf("%s\n", cpy_pch);
-		cpy_pch = strtok(str, "\r\n");
-		cpy_pch = strtok(NULL, "\r\n");
+	}else if(strncmp(target, "/user-agent", 11) == 0){
+
+		for(cpy_pch = strtok(usragent_cpy, "\r\n"); cpy_pch; cpy_pch = strtok(NULL, "\r\n")){
+			if(strncmp(cpy_pch, "User-Agent: ", 11) == 0){
+			//printf("Found user agent: %s!", cpy_pch);
 		
-	}
+			char* agent = cpy_pch + strlen("User-Agent: ");
+			printf("The extracted user-agent is: %s", agent);
+			send(connected_fd, agent,sizeof(agent) - 1, MSG_CONFIRM);
+			}
+		}
+		
+	
 	} else {
         send(connected_fd, NOTFOUND_msg, sizeof(NOTFOUND_msg) - 1, MSG_CONFIRM);
     }
