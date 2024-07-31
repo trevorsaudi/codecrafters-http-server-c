@@ -21,7 +21,7 @@ size_t NOTFOUND_msg_length = sizeof(OK_msg);
 
 void targetTokenizer(char str[], int connected_fd){
 
-	char *usragent_cpy;
+	char usragent_cpy[BUFFER_SIZE];
 	char *user_agent;
 	char *cpy_pch;
     char *pch;
@@ -54,6 +54,7 @@ void targetTokenizer(char str[], int connected_fd){
 			char* agent = cpy_pch + strlen("User-Agent: ");
 			printf("The extracted user-agent is: %s", agent);
 			snprintf(response, BUFFER_SIZE, echo_resp_template, strlen(agent),agent);
+			printf("The response being sent is: %s",response);
 			send(connected_fd, response ,strlen(response), MSG_CONFIRM);
 			}
 		}
