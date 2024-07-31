@@ -20,13 +20,16 @@ size_t OK_msg_length = sizeof(OK_msg);
 size_t NOTFOUND_msg_length = sizeof(OK_msg);
 
 void targetTokenizer(char str[], int connected_fd){
+
+	char *usragent_cpy;
+	char *cpy_pch;
     char *pch;
     char *target;
 	char *echo;
 	int echo_len;
     pch = strtok(str, " ");
     target = pch = strtok(NULL, " ");
-
+	usragent_cpy = str; 
 	// echo = strtok(target, "/"); 
     // echo = strtok(NULL, ""); 
 	// echo_len = sizeof(echo);
@@ -41,6 +44,13 @@ void targetTokenizer(char str[], int connected_fd){
 		snprintf(response, BUFFER_SIZE, echo_resp_template, echo_len, echo);
 		//printf("The value of echo is: %s \n", response);
 		send(connected_fd, response,sizeof(response) - 1, MSG_CONFIRM);
+	}else if(strncmp(target, "/user-agent", 12) == 0){
+		while(cpy_pch != NULL){
+		printf("%s\n", cpy_pch);
+		cpy_pch = strtok(str, "\r\n");
+		cpy_pch = strtok(NULL, "\r\n");
+		
+	}
 	} else {
         send(connected_fd, NOTFOUND_msg, sizeof(NOTFOUND_msg) - 1, MSG_CONFIRM);
     }
