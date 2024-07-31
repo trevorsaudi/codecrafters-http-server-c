@@ -53,7 +53,7 @@ void targetTokenizer(char str[], int connected_fd){
 		
 			char* agent = cpy_pch + strlen("User-Agent: ");
 			printf("The extracted user-agent is: %s", agent);
-			send(connected_fd, agent,sizeof(agent) - 1, MSG_CONFIRM);
+			send(connected_fd, agent,strlen(agent), MSG_CONFIRM);
 			}
 		}
 		
