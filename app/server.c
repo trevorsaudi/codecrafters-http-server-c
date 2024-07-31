@@ -44,7 +44,7 @@ void targetTokenizer(char str[], int connected_fd){
 		echo_len = strlen(echo);
 		snprintf(response, BUFFER_SIZE, echo_resp_template, echo_len, echo);
 		//printf("The value of echo is: %s \n", response);
-		send(connected_fd, response,sizeof(response) - 1, MSG_CONFIRM);
+		send(connected_fd, response,strlen(response), MSG_CONFIRM);
 	}else if(strncmp(target, "/user-agent", 11) == 0){
 
 		for(cpy_pch = strtok(usragent_cpy, "\r\n"); cpy_pch; cpy_pch = strtok(NULL, "\r\n")){
@@ -53,7 +53,8 @@ void targetTokenizer(char str[], int connected_fd){
 		
 			char* agent = cpy_pch + strlen("User-Agent: ");
 			printf("The extracted user-agent is: %s", agent);
-			send(connected_fd, agent,strlen(agent), MSG_CONFIRM);
+			snprintf(response, BUFFER_SIZE, echo_resp_template, strlen(agent),agent);
+			send(connected_fd, response ,strlen(response), MSG_CONFIRM);
 			}
 		}
 		
